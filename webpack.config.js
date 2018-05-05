@@ -48,21 +48,23 @@ let webpackConfig = {
     },
     // How the different types of modules within a project will be treated
     module: {
-        rules: [{
-            // All files with a '.ts' extension will be handled by ts-loader
-            test: /\.ts$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
-        }, {
-            // All files with a '.scss' extension will be handled by sass-loader
-            test: /\.s?css$/,
-            use: [{
+        rules: [
+            {
+                // All files with a '.ts' extension will be handled by ts-loader
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            }, 
+            {
+                // All files with a '.scss' extension will be handled by sass-loader
+                test: /\.s?css$/,
+                use: [{
                     loader: 'file-loader',
                     options: {
                         name: '[name].[hash:10].css'
                     }
                 },
-                'extract-loader',
+                    'extract-loader',
                 {
                     loader: 'css-loader',
                     options: {
@@ -75,45 +77,49 @@ let webpackConfig = {
                         sourceMap: dev
                     }
                 },
-                'resolve-url-loader',
-                'sass-loader'
-            ],
-        }, {
-            // All files with a '.html' extension will be handled by html-loader and save into external file
-            test: /\.html$/,
-            exclude: /node_modules/,
-            use: [{
+                    'resolve-url-loader',
+                    'sass-loader'
+                ],
+            }, 
+            {
+                // All files with a '.html' extension will be handled by html-loader and save into external file
+                test: /\.html$/,
+                exclude: /node_modules/,
+                use: [{
                     loader: 'file-loader',
                     options: {
                         name: '[name].[hash:10].html',
                     }
                 },
-                'extract-loader',
-                'html-loader'
-            ]
-        }, {
-            // All images and fonts will be optimized and their paths will be solved
-            enforce: 'pre',
-            test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|wav)(\?.*)?$/,
-            use: [{
-                loader: 'url-loader',
-                options: {
-                    name: '[name].[hash:10].[ext]',
-                    limit: 8192
-                }
-            }, {
-                loader: 'img-loader'
-            }],
-        }, {
-            test: /\.hbs$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'underscore-template-loader',
-                query: {
-                    attributes: ['img:src', 'link:href']
+                    'extract-loader',
+                    'html-loader'
+                ]
+            }, 
+            {
+                // All images and fonts will be optimized and their paths will be solved
+                enforce: 'pre',
+                test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|wav)(\?.*)?$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        name: '[name].[hash:10].[ext]',
+                        limit: 8192
+                    }
+                }, {
+                    loader: 'img-loader'
+                }],
+            }, 
+            {
+                test: /\.hbs$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'underscore-template-loader',
+                    query: {
+                        attributes: ['img:src', 'link:href']
+                    }
                 }
             }
-        }]
+        ]
     },
     // Configure how modules are resolved
     resolve: {
