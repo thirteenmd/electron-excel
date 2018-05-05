@@ -28,6 +28,7 @@ const pathsToClean = [
 ];
 
 let webpackConfig = {
+    mode: 'none',
     // How source maps are generated : style of source mapping
     devtool: dev ? 'eval-cheap-module-source-map' : false,
     // Development server configuration
