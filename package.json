@@ -18,10 +18,10 @@
 	],
 	"author": "BASSIN Laurent & MARQUET Maxime",
 	"license": "MIT",
-	"main": "dist/electron.js",
+	"main": "electron.js",
 	"scripts": {
-		"dev": "tsc electron.ts --outDir ./dist && cross-env NODE_ENV=dev webpack-dev-server --port=4200",
-		"prod": "webpack && electron .",
+		"dev": "tsc electron.ts --outDir . && cross-env NODE_ENV=dev webpack-dev-server --port=4200",
+		"prod": "webpack && electron dist/electron.js",
 		"packager:win": "cross-env NODE_OS=win node builder/packager.js",
 		"packager:mac": "cross-env NODE_OS=mac node builder/packager.js",
 		"packager:linux": "cross-env NODE_OS=linux node builder/packager.js",
@@ -32,6 +32,7 @@
 	"devDependencies": {
 		"clean-webpack-plugin": "^0.1.17",
 		"concurrently": "^3.5.0",
+		"copy-webpack-plugin": "^4.5.1",
 		"cross-env": "^5.1.1",
 		"css-loader": "^0.28.7",
 		"electron-packager": "^9.1.0",

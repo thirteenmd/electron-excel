@@ -3,8 +3,9 @@ const path = require('path');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const exec = require('child_process').exec;
-const UglifyJs = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // Html-webpack-plugin configuration
 const indexConfig = {
@@ -47,74 +48,72 @@ let webpackConfig = {
     },
     // How the different types of modules within a project will be treated
     module: {
-        rules: [
-            {
-                // All files with a '.ts' extension will be handled by ts-loader
-                test: /\.ts$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
-            }, {
-                // All files with a '.scss' extension will be handled by sass-loader
-                test: /\.s?css$/,
-                use: [{
+        rules: [{
+            // All files with a '.ts' extension will be handled by ts-loader
+            test: /\.ts$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+        }, {
+            // All files with a '.scss' extension will be handled by sass-loader
+            test: /\.s?css$/,
+            use: [{
                     loader: 'file-loader',
                     options: {
                         name: '[name].[hash:10].css'
                     }
                 },
-                    'extract-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            minimize: !dev
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: dev
-                        }
-                    },
-                    'resolve-url-loader',
-                    'sass-loader'
-                ],
-            }, {
-                // All files with a '.html' extension will be handled by html-loader and save into external file
-                test: /\.html$/,
-                exclude: /node_modules/,
-                use: [{
+                'extract-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        minimize: !dev
+                    }
+                },
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        sourceMap: dev
+                    }
+                },
+                'resolve-url-loader',
+                'sass-loader'
+            ],
+        }, {
+            // All files with a '.html' extension will be handled by html-loader and save into external file
+            test: /\.html$/,
+            exclude: /node_modules/,
+            use: [{
                     loader: 'file-loader',
                     options: {
                         name: '[name].[hash:10].html',
                     }
                 },
-                    'extract-loader',
-                    'html-loader'
-                ]
+                'extract-loader',
+                'html-loader'
+            ]
+        }, {
+            // All images and fonts will be optimized and their paths will be solved
+            enforce: 'pre',
+            test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|wav)(\?.*)?$/,
+            use: [{
+                loader: 'url-loader',
+                options: {
+                    name: '[name].[hash:10].[ext]',
+                    limit: 8192
+                }
             }, {
-                // All images and fonts will be optimized and their paths will be solved
-                enforce: 'pre',
-                test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|wav)(\?.*)?$/,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        name: '[name].[hash:10].[ext]',
-                        limit: 8192
-                    }
-                }, {
-                    loader: 'img-loader'
-                }],
-            }, {
-                test: /\.hbs$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'underscore-template-loader',
-                    query: {
-                        attributes: ['img:src', 'link:href']
-                    }
+                loader: 'img-loader'
+            }],
+        }, {
+            test: /\.hbs$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'underscore-template-loader',
+                query: {
+                    attributes: ['img:src', 'link:href']
                 }
             }
-        ]
+        }]
     },
     // Configure how modules are resolved
     resolve: {
@@ -139,13 +138,14 @@ let webpackConfig = {
     plugins: [
         new HtmlWebpackPlugin(indexConfig),
         new Webpack.ContextReplacementPlugin(/angular([\\\/])core([\\\/])/, path.resolve(__dirname, './src')),
+        new CopyWebpackPlugin(['./package.json']),
     ],
 };
 
 // UglifyJs and clean output folder only for prod
 if (!dev) {
     webpackConfig.plugins.push(new CleanWebpackPlugin(pathsToClean));
-    webpackConfig.plugins.push(new UglifyJs());
+    webpackConfig.plugins.push(new UglifyJsPlugin());
 }
 
 // Export the config

@@ -1,5 +1,6 @@
 # compiled output
 dist/*
+electron.js
 
 # dependencies
 node_modules/*
