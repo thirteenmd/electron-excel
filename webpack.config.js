@@ -28,6 +28,7 @@ const pathsToClean = [
 ];
 
 let webpackConfig = {
+    mode: 'none',
     // How source maps are generated : style of source mapping
     devtool: dev ? 'eval-cheap-module-source-map' : false,
     // Development server configuration
@@ -117,6 +118,13 @@ let webpackConfig = {
                     query: {
                         attributes: ['img:src', 'link:href']
                     }
+                }
+            },
+            // Ignore warnings about System.import in Angular
+            { 
+                test: /[\/\\]@angular[\/\\].+\.js$/, 
+                parser: { 
+                    system: true 
                 }
             }
         ]
