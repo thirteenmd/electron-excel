@@ -1,10 +1,10 @@
 <p align="center">
-    <img src="https://i.imgur.com/IsYnbRi.png" width="750">
+    <img src="https://i.imgur.com/eh26WIb.png" width="750">
 </p>
 
 <hr>
 
-> A simple kit for [Electron](https://electron.atom.io), [Angular 4](https://angular.io) and [Webpack 3](https://webpack.js.org) including a live reload system for Angular
+> A simple kit for [Electron](https://electronjs.org/), [Angular 6](https://angular.io) and [Webpack 4](https://webpack.js.org) including a live reload system for Angular
 
 > The boilerplate include loaders for [TypeScript](https://www.typescriptlang.org/) and [Sass](http://sass-lang.com/)
 
