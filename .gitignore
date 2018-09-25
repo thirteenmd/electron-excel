@@ -24,3 +24,6 @@ linux_installer/*
 
 # miscellaneous
 npm-debug-log
+
+#all xlsx files
+*.xlsx
